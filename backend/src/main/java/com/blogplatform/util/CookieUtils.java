@@ -21,24 +21,24 @@ public class CookieUtils {
         return Optional.empty();
     }
 
-    public static void createCookie(HttpServletResponse response, String name, String value, long maxAgeInMs) {
+    public static void createCookie(HttpServletResponse response, String name, String value, long maxAgeInMs, boolean secure, String sameSite) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)
-                .secure(false) // Set to true in production if running on HTTPS
+                .secure(secure)
                 .path("/")
                 .maxAge(maxAgeInMs / 1000)
-                .sameSite("Lax")
+                .sameSite(sameSite)
                 .build();
         response.addHeader("Set-Cookie", cookie.toString());
     }
 
-    public static void clearCookie(HttpServletResponse response, String name) {
+    public static void clearCookie(HttpServletResponse response, String name, boolean secure, String sameSite) {
         ResponseCookie cookie = ResponseCookie.from(name, "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(secure)
                 .path("/")
                 .maxAge(0)
-                .sameSite("Lax")
+                .sameSite(sameSite)
                 .build();
         response.addHeader("Set-Cookie", cookie.toString());
     }

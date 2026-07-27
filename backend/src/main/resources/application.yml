@@ -1,5 +1,6 @@
 server:
   port: ${PORT:8080}
+  forward-headers-strategy: framework
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
@@ -52,6 +53,9 @@ app:
     accessTokenExpirationMs: 900000
     # Token lifespan - Refresh Token (7 days = 604800000 ms)
     refreshTokenExpirationMs: 604800000
+  cookie:
+    secure: ${COOKIE_SECURE:false}
+    sameSite: ${COOKIE_SAME_SITE:Lax}
   email:
     verification-url: ${FRONTEND_URL:http://localhost:5173}/verify-email
     reset-password-url: ${FRONTEND_URL:http://localhost:5173}/reset-password

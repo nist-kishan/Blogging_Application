@@ -56,6 +56,12 @@ public class AuthController {
     @Value("${app.jwt.refreshTokenExpirationMs}")
     private long refreshTokenExpirationMs;
 
+    @Value("${app.cookie.secure:false}")
+    private boolean cookieSecure;
+
+    @Value("${app.cookie.sameSite:Lax}")
+    private String cookieSameSite;
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponse>> register(@Valid @RequestBody RegisterRequest request) {
         User user = userService.registerUser(request);
@@ -79,8 +85,8 @@ public class AuthController {
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
         // Set HttpOnly Cookies
-        CookieUtils.createCookie(response, "accessToken", accessToken, accessTokenExpirationMs);
-        CookieUtils.createCookie(response, "refreshToken", refreshToken.getToken(), refreshTokenExpirationMs);
+        CookieUtils.createCookie(response, "accessToken", accessToken, accessTokenExpirationMs, cookieSecure, cookieSameSite);
+        CookieUtils.createCookie(response, "refreshToken", refreshToken.getToken(), refreshTokenExpirationMs, cookieSecure, cookieSameSite);
 
         log.info("User {} logged in successfully.", user.getUsername());
         return ResponseEntity.ok(ApiResponse.success("Login successful", userMapper.toResponse(user)));
@@ -89,13 +95,13 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request, HttpServletResponse response) {
         // Clear cookies
-        CookieUtils.clearCookie(response, "accessToken");
+        CookieUtils.clearCookie(response, "accessToken", cookieSecure, cookieSameSite);
 
         CookieUtils.getCookie(request, "refreshToken")
                 .map(Cookie::getValue)
                 .ifPresent(token -> {
                     refreshTokenService.deleteByToken(token);
-                    CookieUtils.clearCookie(response, "refreshToken");
+                    CookieUtils.clearCookie(response, "refreshToken", cookieSecure, cookieSameSite);
                 });
 
         SecurityContextHolder.clearContext();
@@ -116,11 +122,11 @@ public class AuthController {
 
         // Rotate Access Token
         String newAccessToken = tokenProvider.generateTokenFromUserId(user.getId());
-        CookieUtils.createCookie(response, "accessToken", newAccessToken, accessTokenExpirationMs);
+        CookieUtils.createCookie(response, "accessToken", newAccessToken, accessTokenExpirationMs, cookieSecure, cookieSameSite);
 
         // Rotate Refresh Token
         RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user.getId());
-        CookieUtils.createCookie(response, "refreshToken", newRefreshToken.getToken(), refreshTokenExpirationMs);
+        CookieUtils.createCookie(response, "refreshToken", newRefreshToken.getToken(), refreshTokenExpirationMs, cookieSecure, cookieSameSite);
 
         log.info("Token refreshed successfully for user: {}", user.getUsername());
         return ResponseEntity.ok(ApiResponse.success("Token refreshed successfully"));
