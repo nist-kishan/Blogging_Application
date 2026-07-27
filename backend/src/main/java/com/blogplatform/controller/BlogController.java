@@ -99,6 +99,12 @@ public class BlogController {
         return ResponseEntity.ok(ApiResponse.success("Blog post created successfully", response));
     }
 
+    @PostMapping("/{id}/view")
+    public ResponseEntity<ApiResponse<Void>> incrementViewCount(@PathVariable("id") UUID id) {
+        blogService.incrementViewCount(id);
+        return ResponseEntity.ok(ApiResponse.success("View count incremented successfully"));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<BlogResponse>> updateBlog(
             @PathVariable("id") UUID id,

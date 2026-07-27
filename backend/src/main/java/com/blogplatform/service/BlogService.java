@@ -107,20 +107,24 @@ public class BlogService {
         blogRepository.delete(blog); // Soft delete via @SQLDelete
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Blog getBlogById(UUID id) {
-        Blog blog = blogRepository.findById(id)
+        return blogRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog", "id", id));
-        blog.setViewCount(blog.getViewCount() + 1);
-        return blogRepository.save(blog);
+    }
+
+    @Transactional(readOnly = true)
+    public Blog getBlogBySlug(String slug) {
+        return blogRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Blog", "slug", slug));
     }
 
     @Transactional
-    public Blog getBlogBySlug(String slug) {
-        Blog blog = blogRepository.findBySlug(slug)
-                .orElseThrow(() -> new ResourceNotFoundException("Blog", "slug", slug));
+    public void incrementViewCount(UUID id) {
+        Blog blog = blogRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Blog", "id", id));
         blog.setViewCount(blog.getViewCount() + 1);
-        return blogRepository.save(blog);
+        blogRepository.save(blog);
     }
 
     @Transactional(readOnly = true)

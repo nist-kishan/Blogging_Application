@@ -74,6 +74,25 @@
 }
 
 /* Text overrides */
+.text-white {
+  color: #ffffff !important;
+}
+
+html:not(.dark) .text-white {
+  color: var(--text-color) !important;
+}
+
+html:not(.dark) [class*="bg-primary"].text-white,
+html:not(.dark) [class*="bg-rose"].text-white,
+html:not(.dark) [class*="bg-emerald"].text-white,
+html:not(.dark) [class*="bg-amber"].text-white,
+html:not(.dark) [class*="bg-indigo"].text-white,
+html:not(.dark) [class*="bg-violet"].text-white,
+html:not(.dark) [class*="bg-red"].text-white,
+html:not(.dark) [class*="bg-green"].text-white {
+  color: #ffffff !important;
+}
+
 .text-slate-100 {
   color: var(--text-color) !important;
 }

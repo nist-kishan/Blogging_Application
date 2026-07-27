@@ -1,10 +1,13 @@
 package com.blogplatform.controller;
 
 import com.blogplatform.dto.ApiResponse;
+import com.blogplatform.service.CloudinaryService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import jakarta.annotation.PostConstruct;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,11 +18,14 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/upload")
+@RequiredArgsConstructor
 public class FileUploadController {
 
+    private final CloudinaryService cloudinaryService;
     private final Path root = Paths.get("uploads");
 
-    public FileUploadController() {
+    @PostConstruct
+    public void init() {
         try {
             Files.createDirectories(root);
         } catch (IOException e) {
@@ -33,7 +39,13 @@ public class FileUploadController {
             if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body(ApiResponse.error("File is empty"));
             }
-            // Generate a secure unique filename
+
+            if (cloudinaryService.isConfigured()) {
+                String fileUrl = cloudinaryService.uploadFile(file);
+                return ResponseEntity.ok(ApiResponse.success("File uploaded to Cloudinary successfully", fileUrl));
+            }
+            
+            // Fallback to local storage if Cloudinary is not configured
             String originalName = file.getOriginalFilename();
             String cleanName = originalName != null ? originalName.replaceAll("\\s+", "_") : "unnamed";
             String filename = UUID.randomUUID().toString() + "_" + cleanName;
@@ -42,7 +54,7 @@ public class FileUploadController {
             
             // Return public static path resource URL
             String fileUrl = "/uploads/" + filename;
-            return ResponseEntity.ok(ApiResponse.success("File uploaded successfully", fileUrl));
+            return ResponseEntity.ok(ApiResponse.success("File uploaded locally successfully", fileUrl));
         } catch (Exception e) {
             log.error("Failed to store file", e);
             return ResponseEntity.internalServerError().body(ApiResponse.error("Could not upload the file: " + e.getMessage()));

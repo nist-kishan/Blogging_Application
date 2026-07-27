@@ -5,5 +5,6 @@ export const getImageUrl = (path) => {
   }
   // Ensure relative path starting with /
   const cleanPath = path.startsWith('/') ? path : '/' + path;
-  return 'http://localhost:8085' + cleanPath;
+  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8085';
+  return baseUrl + cleanPath;
 };

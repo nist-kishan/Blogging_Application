@@ -61,6 +61,11 @@ export const blogService = {
     return response.data;
   },
 
+  incrementViewCount: async (id) => {
+    const response = await axiosInstance.post(`/api/v1/blogs/${id}/view`);
+    return response.data;
+  },
+
   getLikedBlogs: async (params = {}) => {
     const response = await axiosInstance.get('/api/v1/blogs/liked', { params });
     return response.data;

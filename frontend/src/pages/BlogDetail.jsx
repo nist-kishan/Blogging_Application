@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
@@ -22,6 +22,24 @@ const BlogDetail = () => {
   });
 
   const blog = blogData?.data;
+
+  useEffect(() => {
+    if (blog?.id) {
+      const viewedBlogs = JSON.parse(sessionStorage.getItem('viewedBlogs') || '[]');
+      if (!viewedBlogs.includes(blog.id)) {
+        blogService.incrementViewCount(blog.id)
+          .then(() => {
+            viewedBlogs.push(blog.id);
+            sessionStorage.setItem('viewedBlogs', JSON.stringify(viewedBlogs));
+            // Silently invalidate to fetch the new viewCount
+            queryClient.invalidateQueries(['blog', slug]);
+          })
+          .catch((err) => {
+            console.error('Failed to increment view count', err);
+          });
+      }
+    }
+  }, [blog?.id, slug, queryClient]);
   const isAuthor = blog && user && blog.author.id === user.id;
   const isAdmin = user?.role === 'ADMIN';
 

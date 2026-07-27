@@ -61,6 +61,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/blogs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/comments/**").permitAll()
+                // Public POST endpoints
+                .requestMatchers(HttpMethod.POST, "/api/v1/blogs/*/view").permitAll()
                 // Admin dashboard and endpoints
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 // All other requests require authentication
