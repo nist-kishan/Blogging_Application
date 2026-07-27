@@ -1,11 +1,11 @@
-services:
+databases:
   # Database Service
-  - type: db
-    name: blog-postgres-db
+  - name: blog-postgres-db
     databaseName: blog_db
     user: postgres
     plan: free
 
+services:
   # Backend Web Service
   - type: web
     name: blog-backend-api
