@@ -74,9 +74,6 @@
 }
 
 /* Text overrides */
-.text-white {
-  color: var(--text-color) !important;
-}
 .text-slate-100 {
   color: var(--text-color) !important;
 }
