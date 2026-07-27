@@ -2,7 +2,6 @@ databases:
   # Database Service
   - name: blog-postgres-db
     databaseName: blog_db
-    user: postgres
     plan: free
 
 services:
