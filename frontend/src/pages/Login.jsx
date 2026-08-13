@@ -102,10 +102,10 @@ const Login = () => {
 
           <button
             type="submit"
-            disabled={loginMutation.isLoading}
+            disabled={loginMutation.isPending}
             className="w-full py-3.5 px-6 rounded-xl font-medium bg-primary-600 hover:bg-primary-500 active:scale-[0.98] transition shadow-lg shadow-primary-500/25 flex items-center justify-center gap-2 text-sm text-white mt-6"
           >
-            {loginMutation.isLoading ? <Spinner size="sm" /> : <LogIn className="w-4 h-4" />}
+            {loginMutation.isPending ? <Spinner size="sm" /> : <LogIn className="w-4 h-4" />}
             <span>Sign In</span>
           </button>
         </form>

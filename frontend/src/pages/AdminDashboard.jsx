@@ -4,7 +4,7 @@ import { adminService } from '../services/adminService';
 import { categoryService } from '../services/categoryService';
 import { blogService } from '../services/blogService';
 import { Spinner } from '../components/Loader';
-import { LayoutDashboard, Users, Layers, MessageSquare, ShieldAlert, Plus, Trash2, Edit2, Shield, User, FileText, Check, AlertCircle } from 'lucide-react';
+import { LayoutDashboard, Users, Layers, MessageSquare, ShieldAlert, Plus, Trash2, Edit2, Shield, User, FileText, AlertCircle } from 'lucide-react';
 import ConfirmModal from '../components/ConfirmModal';
 
 const AdminDashboard = () => {
@@ -60,14 +60,14 @@ const AdminDashboard = () => {
   const roleMutation = useMutation({
     mutationFn: adminService.updateUserRole,
     onSuccess: () => {
-      queryClient.invalidateQueries(['adminUsers']);
+      queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
     },
   });
 
   const deleteUserMutation = useMutation({
     mutationFn: adminService.deleteUser,
     onSuccess: () => {
-      queryClient.invalidateQueries(['adminUsers']);
+      queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
     },
   });
 
@@ -75,7 +75,8 @@ const AdminDashboard = () => {
   const createCatMutation = useMutation({
     mutationFn: categoryService.createCategory,
     onSuccess: () => {
-      queryClient.invalidateQueries(['adminCategories']);
+      queryClient.invalidateQueries({ queryKey: ['adminCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
       resetCatForm();
     },
     onError: (err) => {
@@ -86,7 +87,8 @@ const AdminDashboard = () => {
   const updateCatMutation = useMutation({
     mutationFn: categoryService.updateCategory,
     onSuccess: () => {
-      queryClient.invalidateQueries(['adminCategories']);
+      queryClient.invalidateQueries({ queryKey: ['adminCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
       resetCatForm();
     },
     onError: (err) => {
@@ -97,7 +99,8 @@ const AdminDashboard = () => {
   const deleteCatMutation = useMutation({
     mutationFn: categoryService.deleteCategory,
     onSuccess: () => {
-      queryClient.invalidateQueries(['adminCategories']);
+      queryClient.invalidateQueries({ queryKey: ['adminCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
     },
   });
 
@@ -105,14 +108,18 @@ const AdminDashboard = () => {
   const toggleBlogStatusMutation = useMutation({
     mutationFn: ({ id, data }) => blogService.updateBlog({ id, data }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['adminBlogs']);
+      queryClient.invalidateQueries({ queryKey: ['adminBlogs'] });
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['featuredBlogs'] });
     },
   });
 
   const deleteBlogMutation = useMutation({
     mutationFn: blogService.deleteBlog,
     onSuccess: () => {
-      queryClient.invalidateQueries(['adminBlogs']);
+      queryClient.invalidateQueries({ queryKey: ['adminBlogs'] });
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['featuredBlogs'] });
     },
   });
 

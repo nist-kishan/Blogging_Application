@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useMutation } from '@tanstack/react-query';
 import { authService } from '../services/authService';
 import { logoutSuccess } from '../store/authSlice';
-import { Search, PenTool, LogOut, LayoutDashboard, User, Heart, Bookmark, Menu, X, ChevronDown, Sun, Moon } from 'lucide-react';
+import { Search, PenTool, LogOut, LayoutDashboard, User, Bookmark, Menu, X, ChevronDown, Sun, Moon } from 'lucide-react';
 import { getImageUrl } from '../utils/imageUtils';
 
 const Navbar = () => {

@@ -4,10 +4,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { blogService } from '../services/blogService';
 import CommentSection from '../components/CommentSection';
-import { FullPageLoader, Spinner } from '../components/Loader';
+import { FullPageLoader } from '../components/Loader';
 import { Heart, Bookmark, Eye, Calendar, ArrowLeft, Edit3, Trash2 } from 'lucide-react';
 import { getImageUrl } from '../utils/imageUtils';
 import ConfirmModal from '../components/ConfirmModal';
+import { sanitizeRichHtml } from '../utils/sanitizeHtml';
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -32,7 +33,7 @@ const BlogDetail = () => {
             viewedBlogs.push(blog.id);
             sessionStorage.setItem('viewedBlogs', JSON.stringify(viewedBlogs));
             // Silently invalidate to fetch the new viewCount
-            queryClient.invalidateQueries(['blog', slug]);
+            queryClient.invalidateQueries({ queryKey: ['blog', slug] });
           })
           .catch((err) => {
             console.error('Failed to increment view count', err);
@@ -46,16 +47,16 @@ const BlogDetail = () => {
   const likeMutation = useMutation({
     mutationFn: () => (blog.liked ? blogService.unlikeBlog(blog.id) : blogService.likeBlog(blog.id)),
     onSuccess: () => {
-      queryClient.invalidateQueries(['blog', slug]);
-      queryClient.invalidateQueries(['blogs']);
+      queryClient.invalidateQueries({ queryKey: ['blog', slug] });
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
     },
   });
 
   const bookmarkMutation = useMutation({
     mutationFn: () => (blog.bookmarked ? blogService.removeBookmark(blog.id) : blogService.bookmarkBlog(blog.id)),
     onSuccess: () => {
-      queryClient.invalidateQueries(['blog', slug]);
-      queryClient.invalidateQueries(['blogs']);
+      queryClient.invalidateQueries({ queryKey: ['blog', slug] });
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
     },
   });
 
@@ -196,9 +197,10 @@ const BlogDetail = () => {
       </div>
 
       {/* 4. POST CONTENT */}
-      <div className="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-6 text-base whitespace-pre-wrap">
-        {blog.content}
-      </div>
+      <div
+        className="blog-content max-w-none text-slate-300 leading-relaxed text-base"
+        dangerouslySetInnerHTML={{ __html: sanitizeRichHtml(blog.content) }}
+      />
 
       {/* 5. INTERACTION BAR */}
       <div className="flex items-center justify-between border-y border-slate-900 py-4 mt-8">

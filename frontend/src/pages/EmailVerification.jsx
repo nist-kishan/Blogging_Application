@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { authService } from '../services/authService';
@@ -10,6 +10,7 @@ const EmailVerification = () => {
   const token = searchParams.get('token');
   const [status, setStatus] = useState('verifying'); // 'verifying', 'success', 'error'
   const [errorMsg, setErrorMsg] = useState('');
+  const verifiedTokenRef = useRef(null);
 
   const verifyMutation = useMutation({
     mutationFn: authService.verifyEmail,
@@ -24,12 +25,14 @@ const EmailVerification = () => {
 
   useEffect(() => {
     if (token) {
+      if (verifiedTokenRef.current === token) return;
+      verifiedTokenRef.current = token;
       verifyMutation.mutate(token);
     } else {
       setStatus('error');
       setErrorMsg('No verification token provided.');
     }
-  }, [token]);
+  }, [token, verifyMutation]);
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4">

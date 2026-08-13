@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector, useDispatch } from 'react-redux';
 import { userService } from '../services/userService';
 import { blogService } from '../services/blogService';
 import BlogCard from '../components/BlogCard';
 import { Spinner, BlogGridSkeleton } from '../components/Loader';
-import { User, FileText, Heart, Bookmark, Edit, Globe, Mail, Save, X, AlertCircle } from 'lucide-react';
+import { FileText, Heart, Bookmark, Edit, Globe, Mail, Save, X, AlertCircle } from 'lucide-react';
 import { fileService } from '../services/fileService';
 import { loginSuccess } from '../store/authSlice';
 import { getImageUrl } from '../utils/imageUtils';
 
 const Profile = () => {
   const { username } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-  const { user: currentUser, isAuthenticated } = useSelector((state) => state.auth);
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   const [activeTab, setActiveTab] = useState('posts'); // 'posts', 'likes', 'bookmarks'
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -35,7 +34,7 @@ const Profile = () => {
       } else {
         setErrorMsg(response.message || 'Upload failed.');
       }
-    } catch (err) {
+    } catch {
       setErrorMsg('Failed to upload image file.');
     } finally {
       setIsUploading(false);
@@ -83,7 +82,7 @@ const Profile = () => {
   const updateProfileMutation = useMutation({
     mutationFn: userService.updateProfile,
     onSuccess: (response) => {
-      queryClient.invalidateQueries(['profile', username]);
+      queryClient.invalidateQueries({ queryKey: ['profile', username] });
       if (response?.data) {
         dispatch(loginSuccess(response.data));
       }
@@ -370,10 +369,10 @@ const Profile = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={updateProfileMutation.isLoading}
+                  disabled={updateProfileMutation.isPending}
                   className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-semibold bg-primary-600 hover:bg-primary-500 text-white transition shadow shadow-primary-500/25"
                 >
-                  {updateProfileMutation.isLoading ? <Spinner size="sm" /> : <Save className="w-4 h-4" />}
+                  {updateProfileMutation.isPending ? <Spinner size="sm" /> : <Save className="w-4 h-4" />}
                   <span>Save Changes</span>
                 </button>
               </div>
