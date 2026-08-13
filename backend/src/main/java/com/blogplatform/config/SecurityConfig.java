@@ -53,6 +53,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Swagger UI & docs
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                // Health check
+                .requestMatchers("/health").permitAll()
                 // Static Uploads resources
                 .requestMatchers("/uploads/**").permitAll()
                 // Auth endpoints
