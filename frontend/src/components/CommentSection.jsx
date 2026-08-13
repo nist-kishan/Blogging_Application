@@ -7,7 +7,7 @@ import { Send, MessageSquare, Reply, Edit2, Trash2, X, Check } from 'lucide-reac
 import { getImageUrl } from '../utils/imageUtils';
 import ConfirmModal from './ConfirmModal';
 
-const CommentNode = ({ comment, blogId, currentUserId, isAdmin, onReply, onEdit, onDelete }) => {
+const CommentNode = ({ comment, currentUserId, isAdmin, onReply, onEdit, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
   const [isReplying, setIsReplying] = useState(false);
@@ -78,7 +78,7 @@ const CommentNode = ({ comment, blogId, currentUserId, isAdmin, onReply, onEdit,
         {currentUserId && !isEditing && (
           <button
             onClick={() => setIsReplying(!isReplying)}
-            className="flex items-center gap-1 text-[10px] text-slate-500 hover:text-slate-300 transition-colors font-semibold"
+            className="flex items-center gap-1 text-[10px] text-slate-500 hover:text-slate-300 transition-colors font-semibold cursor-pointer"
           >
             <Reply className="w-3.5 h-3.5" />
             <span>Reply</span>
@@ -88,7 +88,7 @@ const CommentNode = ({ comment, blogId, currentUserId, isAdmin, onReply, onEdit,
         {isOwner && !isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="flex items-center gap-1 text-[10px] text-slate-500 hover:text-slate-300 transition-colors font-semibold"
+            className="flex items-center gap-1 text-[10px] text-slate-500 hover:text-slate-300 transition-colors font-semibold cursor-pointer"
           >
             <Edit2 className="w-3.5 h-3.5" />
             <span>Edit</span>
@@ -98,7 +98,7 @@ const CommentNode = ({ comment, blogId, currentUserId, isAdmin, onReply, onEdit,
         {(isOwner || isAdmin) && (
           <button
             onClick={() => onDelete(comment.id)}
-            className="flex items-center gap-1 text-[10px] text-rose-500 hover:text-rose-400 transition-colors font-semibold"
+            className="flex items-center gap-1 text-[10px] text-rose-500 hover:text-rose-400 transition-colors font-semibold cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Delete</span>
@@ -118,7 +118,7 @@ const CommentNode = ({ comment, blogId, currentUserId, isAdmin, onReply, onEdit,
           />
           <button
             onClick={handleReplySubmit}
-            className="px-3 bg-primary-600 hover:bg-primary-500 text-white rounded-lg flex items-center justify-center shadow"
+            className="px-3 bg-primary-600 hover:bg-primary-500 text-white rounded-lg flex items-center justify-center shadow cursor-pointer"
           >
             <Send className="w-3 h-3" />
           </button>
@@ -132,7 +132,6 @@ const CommentNode = ({ comment, blogId, currentUserId, isAdmin, onReply, onEdit,
             <CommentNode
               key={reply.id}
               comment={reply}
-              blogId={blogId}
               currentUserId={currentUserId}
               isAdmin={isAdmin}
               onReply={onReply}
@@ -151,6 +150,7 @@ const CommentSection = ({ blogId }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const [newCommentText, setNewCommentText] = useState('');
   const [deletingCommentId, setDeletingCommentId] = useState(null);
+  const [deleteError, setDeleteError] = useState('');
 
   const isAdmin = user?.role === 'ADMIN';
   const currentUserId = user?.id;
@@ -164,23 +164,28 @@ const CommentSection = ({ blogId }) => {
   const createMutation = useMutation({
     mutationFn: (data) => commentService.createComment({ blogId, data }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', blogId]);
-      queryClient.invalidateQueries(['blogs']); // refresh comment count on listing
+      queryClient.invalidateQueries({ queryKey: ['comments', blogId] });
+      queryClient.invalidateQueries({ queryKey: ['blogs'] }); // refresh comment count on listing
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => commentService.updateComment({ id, data }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', blogId]);
+      queryClient.invalidateQueries({ queryKey: ['comments', blogId] });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: commentService.deleteComment,
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', blogId]);
-      queryClient.invalidateQueries(['blogs']);
+      queryClient.invalidateQueries({ queryKey: ['comments', blogId] });
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      setDeletingCommentId(null);
+      setDeleteError('');
+    },
+    onError: (err) => {
+      setDeleteError(err.response?.data?.message || 'Failed to delete comment. Please try again.');
     },
   });
 
@@ -206,6 +211,7 @@ const CommentSection = ({ blogId }) => {
   };
 
   const handleDelete = (commentId) => {
+    setDeleteError('');
     setDeletingCommentId(commentId);
   };
 
@@ -218,9 +224,17 @@ const CommentSection = ({ blogId }) => {
         title="Delete Comment"
         message="Are you sure you want to delete this comment? This action cannot be undone."
         confirmText="Delete Comment"
-        onConfirm={() => deleteMutation.mutate(deletingCommentId)}
-        onCancel={() => setDeletingCommentId(null)}
+        onConfirm={() => deleteMutation.mutateAsync(deletingCommentId)}
+        onCancel={() => {
+          setDeletingCommentId(null);
+          setDeleteError('');
+        }}
       />
+      {deleteError && (
+        <div className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-xs text-red-400">
+          {deleteError}
+        </div>
+      )}
       <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-6">
         <MessageSquare className="w-5 h-5 text-primary-400" />
         <span>Discussion ({comments.length})</span>
@@ -240,10 +254,10 @@ const CommentSection = ({ blogId }) => {
           <div className="flex justify-end">
             <button
               type="submit"
-              disabled={createMutation.isLoading}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium bg-primary-600 hover:bg-primary-500 active:scale-[0.98] transition shadow-lg shadow-primary-500/25 text-sm text-white"
+              disabled={createMutation.isPending}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium bg-primary-600 hover:bg-primary-500 active:scale-[0.98] transition shadow-lg shadow-primary-500/25 text-sm text-white cursor-pointer disabled:cursor-not-allowed"
             >
-              {createMutation.isLoading ? <Spinner size="sm" /> : <Send className="w-4 h-4" />}
+              {createMutation.isPending ? <Spinner size="sm" /> : <Send className="w-4 h-4" />}
               <span>Post Comment</span>
             </button>
           </div>
@@ -253,7 +267,7 @@ const CommentSection = ({ blogId }) => {
           <p className="text-slate-400 text-sm mb-4">Please log in to participate in the discussion.</p>
           <a
             href="/login"
-            className="inline-block py-2 px-6 rounded-lg bg-primary-600 hover:bg-primary-500 text-xs font-semibold text-white transition-colors"
+            className="inline-block py-2 px-6 rounded-lg bg-primary-600 hover:bg-primary-500 text-xs font-semibold text-white transition-colors cursor-pointer"
           >
             Log In
           </a>
@@ -271,7 +285,6 @@ const CommentSection = ({ blogId }) => {
             <CommentNode
               key={comment.id}
               comment={comment}
-              blogId={blogId}
               currentUserId={currentUserId}
               isAdmin={isAdmin}
               onReply={handleReply}

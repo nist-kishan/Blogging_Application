@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordSchema } from '../validations/authSchema';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { authService } from '../services/authService';
 import { Spinner } from '../components/Loader';
@@ -11,7 +11,6 @@ import { Lock, CheckCircle, AlertCircle } from 'lucide-react';
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
-  const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
@@ -95,10 +94,10 @@ const ResetPassword = () => {
 
             <button
               type="submit"
-              disabled={resetMutation.isLoading}
+              disabled={resetMutation.isPending}
               className="w-full py-3.5 px-6 rounded-xl font-medium bg-primary-600 hover:bg-primary-500 active:scale-[0.98] transition shadow-lg shadow-primary-500/25 flex items-center justify-center gap-2 text-sm text-white mt-6"
             >
-              {resetMutation.isLoading ? <Spinner size="sm" /> : null}
+              {resetMutation.isPending ? <Spinner size="sm" /> : null}
               <span>Reset Password</span>
             </button>
           </form>

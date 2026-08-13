@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X, AlertTriangle } from 'lucide-react';
 
 const ConfirmModal = ({
@@ -11,7 +11,21 @@ const ConfirmModal = ({
   onCancel,
   isDanger = true
 }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   if (!isOpen) return null;
+
+  const handleConfirm = async () => {
+    try {
+      setIsSubmitting(true);
+      await onConfirm?.();
+      onCancel();
+    } catch {
+      // Keep the modal open so the caller can surface its error state.
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
@@ -53,22 +67,21 @@ const ConfirmModal = ({
         <div className="flex items-center gap-3 w-full">
           <button
             onClick={onCancel}
+            disabled={isSubmitting}
             className="flex-1 py-2.5 px-4 rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 text-sm font-semibold text-slate-300 hover:text-white transition select-none cursor-pointer"
           >
             {cancelText}
           </button>
           <button
-            onClick={() => {
-              onConfirm();
-              onCancel();
-            }}
+            onClick={handleConfirm}
+            disabled={isSubmitting}
             className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold text-white transition active:scale-[0.98] select-none cursor-pointer ${
               isDanger 
                 ? 'bg-red-600 hover:bg-red-500 shadow-lg shadow-red-600/25' 
                 : 'bg-primary-600 hover:bg-primary-500 shadow-lg shadow-primary-500/25'
             }`}
           >
-            {confirmText}
+            {isSubmitting ? 'Working...' : confirmText}
           </button>
         </div>
       </div>

@@ -21,17 +21,18 @@ const BlogCard = ({ blog }) => {
     mutationFn: () => (blog.liked ? blogService.unlikeBlog(blog.id) : blogService.likeBlog(blog.id)),
     onSuccess: () => {
       // Invalidate queries to refresh lists
-      queryClient.invalidateQueries(['blogs']);
-      queryClient.invalidateQueries(['blog', blog.slug]);
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['blog', blog.slug] });
     },
   });
 
   const bookmarkMutation = useMutation({
     mutationFn: () => (blog.bookmarked ? blogService.removeBookmark(blog.id) : blogService.bookmarkBlog(blog.id)),
     onSuccess: () => {
-      queryClient.invalidateQueries(['blogs']);
-      queryClient.invalidateQueries(['blog', blog.slug]);
-      queryClient.invalidateQueries(['bookmarkedBlogs']);
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['blog', blog.slug] });
+      queryClient.invalidateQueries({ queryKey: ['bookmarkedBlogs'] });
+      queryClient.invalidateQueries({ queryKey: ['bookmarkedBlogsPage'] });
     },
   });
 
@@ -110,7 +111,7 @@ const BlogCard = ({ blog }) => {
           <div className="flex items-center gap-4">
             <button
               onClick={handleLikeClick}
-              disabled={likeMutation.isLoading}
+              disabled={likeMutation.isPending}
               className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${
                 blog.liked ? 'text-rose-500 hover:text-rose-400' : 'text-slate-500 hover:text-slate-300'
               }`}
@@ -126,7 +127,7 @@ const BlogCard = ({ blog }) => {
 
             <button
               onClick={handleBookmarkClick}
-              disabled={bookmarkMutation.isLoading}
+              disabled={bookmarkMutation.isPending}
               className={`transition-colors ${
                 blog.bookmarked ? 'text-amber-500 hover:text-amber-400' : 'text-slate-500 hover:text-slate-300'
               }`}

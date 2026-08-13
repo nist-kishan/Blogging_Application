@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { blogSchema } from '../validations/blogSchema';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -8,9 +8,11 @@ import { blogService } from '../services/blogService';
 import { categoryService } from '../services/categoryService';
 import { useSelector } from 'react-redux';
 import { Spinner, FullPageLoader } from '../components/Loader';
-import { Save, Plus, ArrowLeft, Image, AlertCircle, FileText, X } from 'lucide-react';
+import { Save, Plus, ArrowLeft, Image, AlertCircle, X } from 'lucide-react';
 import { fileService } from '../services/fileService';
 import { getImageUrl } from '../utils/imageUtils';
+import RichTextEditor from '../components/RichTextEditor';
+import { sanitizeRichHtml } from '../utils/sanitizeHtml';
 
 const BlogCreateEdit = () => {
   const { id } = useParams();
@@ -41,7 +43,7 @@ const BlogCreateEdit = () => {
       } else {
         setErrorMsg(response.message || 'Upload failed.');
       }
-    } catch (err) {
+    } catch {
       setErrorMsg('Failed to upload image file. Please try again.');
     } finally {
       setIsUploading(false);
@@ -66,7 +68,7 @@ const BlogCreateEdit = () => {
       });
       
       if (response.success && response.data) {
-        await queryClient.invalidateQueries(['categories']);
+        await queryClient.invalidateQueries({ queryKey: ['categories'] });
         setValue('categoryId', response.data.id);
         setIsAddCatModalOpen(false);
         setNewCatName('');
@@ -96,6 +98,7 @@ const BlogCreateEdit = () => {
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     watch,
     formState: { errors },
@@ -126,7 +129,8 @@ const BlogCreateEdit = () => {
   const createMutation = useMutation({
     mutationFn: blogService.createBlog,
     onSuccess: (response) => {
-      queryClient.invalidateQueries(['blogs']);
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['featuredBlogs'] });
       navigate(`/blog/${response.data.slug}`);
     },
     onError: (err) => {
@@ -137,8 +141,9 @@ const BlogCreateEdit = () => {
   const updateMutation = useMutation({
     mutationFn: blogService.updateBlog,
     onSuccess: (response) => {
-      queryClient.invalidateQueries(['blogs']);
-      queryClient.invalidateQueries(['blog', response.data.slug]);
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['featuredBlogs'] });
+      queryClient.invalidateQueries({ queryKey: ['blog', response.data.slug] });
       navigate(`/blog/${response.data.slug}`);
     },
     onError: (err) => {
@@ -148,10 +153,15 @@ const BlogCreateEdit = () => {
 
   const onSubmit = (data) => {
     setErrorMsg('');
+    const payload = {
+      ...data,
+      content: sanitizeRichHtml(data.content),
+      featured: Boolean(data.featured),
+    };
     if (isEditMode) {
-      updateMutation.mutate({ id, data });
+      updateMutation.mutate({ id, data: payload });
     } else {
-      createMutation.mutate(data);
+      createMutation.mutate(payload);
     }
   };
 
@@ -335,13 +345,18 @@ const BlogCreateEdit = () => {
           {/* Main Content */}
           <div className="space-y-1">
             <label className="text-xs font-semibold text-slate-400">Main Content Body</label>
-            <textarea
-              placeholder="Write your article body here. Spacing and breaks are preserved..."
-              {...register('content')}
-              className="w-full p-4 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-primary-500 transition-colors font-sans"
-              rows={12}
+            <Controller
+              name="content"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <RichTextEditor
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.content?.message}
+                />
+              )}
             />
-            {errors.content && <span className="text-[11px] text-red-400">{errors.content.message}</span>}
           </div>
         </div>
 
@@ -375,10 +390,10 @@ const BlogCreateEdit = () => {
 
           <button
             type="submit"
-            disabled={createMutation.isLoading || updateMutation.isLoading}
+            disabled={createMutation.isPending || updateMutation.isPending}
             className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium bg-primary-600 hover:bg-primary-500 active:scale-[0.98] transition shadow-lg shadow-primary-500/25 text-sm text-white"
           >
-            {createMutation.isLoading || updateMutation.isLoading ? (
+            {createMutation.isPending || updateMutation.isPending ? (
               <Spinner size="sm" />
             ) : isEditMode ? (
               <Save className="w-4 h-4" />

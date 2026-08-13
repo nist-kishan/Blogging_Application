@@ -4,7 +4,7 @@ import { blogService } from '../services/blogService';
 import { categoryService } from '../services/categoryService';
 import BlogCard from '../components/BlogCard';
 import { BlogGridSkeleton } from '../components/Loader';
-import { TrendingUp, Flame, Calendar, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { TrendingUp, Flame, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -38,10 +38,12 @@ const Home = () => {
       }
       if (activeTab === 'latest') {
         params.sort = 'createdAt,desc';
+      } else {
+        params.sort = 'viewCount,desc';
       }
       return blogService.getBlogs(params);
     },
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
   });
 
   // Fetch Trending Blogs (sidebar list)

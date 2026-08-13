@@ -7,4 +7,5 @@ export const blogSchema = z.object({
   bannerUrl: z.string().max(500, 'Banner URL must be under 500 characters').optional().or(z.literal('')),
   categoryId: z.string().uuid('Please select a valid category'),
   status: z.enum(['DRAFT', 'PUBLISHED']),
+  featured: z.boolean().optional(),
 });

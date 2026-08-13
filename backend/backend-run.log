@@ -1,0 +1,117 @@
+[INFO] Scanning for projects...
+Downloading from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml
+Progress (1): 234 BProgress (2): 234 B | 243 BProgress (3): 234 B | 243 B | 249 B                                   Downloaded from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml (234 B at 150 B/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml (249 B at 160 B/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml (243 B at 156 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml
+Progress (1): 375 BProgress (2): 375 B | 394 BProgress (3): 375 B | 394 B | 398 B                                   Downloaded from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml (375 B at 2.5 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml
+Downloaded from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml (398 B at 2.6 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml (394 B at 2.6 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml
+Progress (1): 242 BProgress (2): 242 B | 3.7 kBProgress (2): 242 B | 7.5 kBProgress (3): 242 B | 7.5 kB | 4.6 kBProgress (3): 242 B | 13 kB | 4.6 kB Progress (3): 242 B | 13 kB | 9.7 kBProgress (3): 242 B | 19 kB | 9.7 kBProgress (3): 242 B | 19 kB | 14 kB Progress (3): 242 B | 20 kB | 14 kB                                   Downloaded from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml (242 B at 2.2 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml (14 kB at 130 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml (20 kB at 183 kB/s)
+Progress (1): 255 B                   Downloaded from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml (255 B at 112 B/s)
+[INFO] 
+[INFO] -------------------< com.blogplatform:blog-platform >-------------------
+[INFO] Building blog-platform 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.0:run (default-cli) > test-compile @ blog-platform >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ blog-platform ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ blog-platform ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ blog-platform ---
+[INFO] skip non existing resourceDirectory D:\Project\Springboot-react-blogging\backend\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ blog-platform ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.0.0:run (default-cli) < test-compile @ blog-platform <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.0:run (default-cli) @ blog-platform ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.0)
+
+2026-08-14T00:35:32.987+05:30  INFO 21304 --- [blog-platform] [           main] c.blogplatform.BlogPlatformApplication   : Starting BlogPlatformApplication using Java 24.0.2 with PID 21304 (D:\Project\Springboot-react-blogging\backend\target\classes started by kisha in D:\Project\Springboot-react-blogging\backend)
+2026-08-14T00:35:32.990+05:30 DEBUG 21304 --- [blog-platform] [           main] c.blogplatform.BlogPlatformApplication   : Running with Spring Boot v4.0.0, Spring v7.0.1
+2026-08-14T00:35:32.992+05:30  INFO 21304 --- [blog-platform] [           main] c.blogplatform.BlogPlatformApplication   : The following 1 profile is active: "dev"
+2026-08-14T00:35:34.258+05:30  INFO 21304 --- [blog-platform] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-14T00:35:34.407+05:30  INFO 21304 --- [blog-platform] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 135 ms. Found 7 JPA repository interfaces.
+2026-08-14T00:35:35.417+05:30  INFO 21304 --- [blog-platform] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8085 (http)
+2026-08-14T00:35:35.436+05:30  INFO 21304 --- [blog-platform] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-14T00:35:35.437+05:30  INFO 21304 --- [blog-platform] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.14]
+2026-08-14T00:35:35.524+05:30  INFO 21304 --- [blog-platform] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2453 ms
+2026-08-14T00:35:35.671+05:30  INFO 21304 --- [blog-platform] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-14T00:35:35.766+05:30  INFO 21304 --- [blog-platform] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 7.1.8.Final
+2026-08-14T00:35:36.667+05:30  INFO 21304 --- [blog-platform] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-14T00:35:36.769+05:30  INFO 21304 --- [blog-platform] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-14T00:35:37.331+05:30  INFO 21304 --- [blog-platform] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3ebc6d8b
+2026-08-14T00:35:37.333+05:30  INFO 21304 --- [blog-platform] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-14T00:35:37.430+05:30  WARN 21304 --- [blog-platform] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-14T00:35:37.482+05:30  INFO 21304 --- [blog-platform] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/blog_db]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.4
+	Default catalog/schema: blog_db/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DatasourceConnectionProviderImpl
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-08-14T00:35:40.685+05:30  INFO 21304 --- [blog-platform] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-14T00:35:40.702+05:30  INFO 21304 --- [blog-platform] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-14T00:35:40.890+05:30  INFO 21304 --- [blog-platform] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-14T00:35:41.532+05:30 DEBUG 21304 --- [blog-platform] [           main] c.b.security.JwtAuthenticationFilter     : Filter 'jwtAuthenticationFilter' configured for use
+2026-08-14T00:35:44.617+05:30  INFO 21304 --- [blog-platform] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-08-14T00:35:45.432+05:30  INFO 21304 --- [blog-platform] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/blog_db (PostgreSQL 18.4)
+2026-08-14T00:35:45.549+05:30  INFO 21304 --- [blog-platform] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-08-14T00:35:45.557+05:30  INFO 21304 --- [blog-platform] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.047s)
+2026-08-14T00:35:45.606+05:30  INFO 21304 --- [blog-platform] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" with baseline ...
+2026-08-14T00:35:45.723+05:30  INFO 21304 --- [blog-platform] [           main] o.f.core.internal.command.DbBaseline     : Successfully baselined schema with version: 1
+2026-08-14T00:35:45.757+05:30  INFO 21304 --- [blog-platform] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 1
+2026-08-14T00:35:45.765+05:30  INFO 21304 --- [blog-platform] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-08-14T00:35:47.682+05:30  INFO 21304 --- [blog-platform] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8085 (http) with context path '/'
+2026-08-14T00:35:47.694+05:30  INFO 21304 --- [blog-platform] [           main] c.blogplatform.BlogPlatformApplication   : Started BlogPlatformApplication in 15.558 seconds (process running for 16.227)
+2026-08-14T00:35:58.839+05:30  INFO 21304 --- [blog-platform] [nio-8085-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-14T00:35:58.839+05:30  INFO 21304 --- [blog-platform] [nio-8085-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-08-14T00:35:58.841+05:30  INFO 21304 --- [blog-platform] [nio-8085-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-08-14T00:36:39.453+05:30  WARN 21304 --- [blog-platform] [nio-8085-exec-9] c.b.exception.GlobalExceptionHandler     : Unauthorized: Refresh token is missing. Please log in.
+2026-08-14T00:36:39.558+05:30  WARN 21304 --- [blog-platform] [nio-8085-exec-8] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-08-14T00:40:23.199+05:30  WARN 21304 --- [blog-platform] [nio-8085-exec-9] c.b.exception.GlobalExceptionHandler     : Unauthorized: Refresh token is missing. Please log in.
+2026-08-14T00:43:46.727+05:30  WARN 21304 --- [blog-platform] [nio-8085-exec-2] c.b.exception.GlobalExceptionHandler     : Unauthorized: Refresh token is missing. Please log in.
+2026-08-14T00:43:54.368+05:30  WARN 21304 --- [blog-platform] [nio-8085-exec-7] c.b.exception.GlobalExceptionHandler     : Authentication failed: Bad credentials
+2026-08-14T00:43:54.380+05:30  WARN 21304 --- [blog-platform] [io-8085-exec-10] c.b.exception.GlobalExceptionHandler     : Unauthorized: Refresh token is missing. Please log in.
+2026-08-14T00:44:29.012+05:30  INFO 21304 --- [blog-platform] [nio-8085-exec-9] com.blogplatform.service.EmailService    : =========================================
+2026-08-14T00:44:29.012+05:30  INFO 21304 --- [blog-platform] [nio-8085-exec-9] com.blogplatform.service.EmailService    : EMAIL VERIFICATION LINK SENT TO: asthakumariby2@gmail.com
+2026-08-14T00:44:29.013+05:30  INFO 21304 --- [blog-platform] [nio-8085-exec-9] com.blogplatform.service.EmailService    : Verification URL: http://localhost:5173/verify-email?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0MGYxZWEwNi01ZjQ4LTQzODAtODc2YS1kOTY3ZjQwNjQwMGYiLCJpYXQiOjE3ODY2NDg0NjgsImV4cCI6MTc4NjY0OTM2OH0.a-qZio6lOF6TXL15box7R1GtAFwJrQjoJWaK19LErW7SXyfUDSbbPeU2PsgfyvFzHNV5YNJsEGMaghjUE5x27A
+2026-08-14T00:44:29.013+05:30  INFO 21304 --- [blog-platform] [nio-8085-exec-9] com.blogplatform.service.EmailService    : =========================================
+2026-08-14T00:44:29.013+05:30  WARN 21304 --- [blog-platform] [nio-8085-exec-9] com.blogplatform.service.EmailService    : SMTP credentials are not configured. Email NOT sent to asthakumariby2@gmail.com (logged to console above)
+2026-08-14T00:44:43.661+05:30  INFO 21304 --- [blog-platform] [nio-8085-exec-2] c.b.controller.AuthController            : User asthakumariby2 logged in successfully.
