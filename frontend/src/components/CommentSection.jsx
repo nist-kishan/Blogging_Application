@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { commentService } from '../services/commentService';
 import { Spinner } from './Loader';
 import { Send, MessageSquare, Reply, Edit2, Trash2, X, Check } from 'lucide-react';
-import { getImageUrl } from '../utils/imageUtils';
+import { getImageUrl, DEFAULT_AVATAR_URL } from '../utils/imageUtils';
 import ConfirmModal from './ConfirmModal';
 
 const CommentNode = ({ comment, currentUserId, isAdmin, onReply, onEdit, onDelete }) => {
@@ -35,7 +35,7 @@ const CommentNode = ({ comment, currentUserId, isAdmin, onReply, onEdit, onDelet
       {/* Header Info */}
       <div className="flex items-center gap-2 mb-2">
         <img
-          src={getImageUrl(comment.author.avatarUrl) || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + comment.author.username}
+          src={getImageUrl(comment.author.avatarUrl) || DEFAULT_AVATAR_URL}
           alt={comment.author.fullName}
           className="w-6 h-6 rounded-full border border-slate-800 bg-slate-800"
         />
@@ -57,13 +57,13 @@ const CommentNode = ({ comment, currentUserId, isAdmin, onReply, onEdit, onDelet
           <div className="flex gap-2 justify-end">
             <button
               onClick={() => setIsEditing(false)}
-              className="flex items-center gap-1 text-[11px] font-medium text-slate-500 hover:text-slate-300 border border-slate-800 px-2.5 py-1 rounded"
+              className="flex items-center gap-1 text-[11px] font-medium text-slate-500 hover:text-slate-300 border border-slate-800 px-2.5 py-1 rounded cursor-pointer"
             >
               <X className="w-3 h-3" /> Cancel
             </button>
             <button
               onClick={handleEditSubmit}
-              className="flex items-center gap-1 text-[11px] font-medium text-white bg-primary-600 hover:bg-primary-500 px-2.5 py-1 rounded shadow"
+              className="flex items-center gap-1 text-[11px] font-medium text-white bg-primary-600 hover:bg-primary-500 px-2.5 py-1 rounded shadow cursor-pointer"
             >
               <Check className="w-3 h-3" /> Save
             </button>

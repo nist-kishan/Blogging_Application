@@ -18,9 +18,6 @@ const Footer = () => {
         <div className="flex items-center gap-8 text-xs font-medium text-slate-500">
           <Link to="/" className="hover:text-slate-300 transition-colors">Home</Link>
           <Link to="/categories" className="hover:text-slate-300 transition-colors">Categories</Link>
-          <a href="/swagger-ui.html" target="_blank" rel="noreferrer" className="hover:text-slate-300 transition-colors">
-            API Documentation
-          </a>
         </div>
       </div>
     </footer>

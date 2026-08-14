@@ -6,7 +6,7 @@ import { blogService } from '../services/blogService';
 import CommentSection from '../components/CommentSection';
 import { FullPageLoader } from '../components/Loader';
 import { Heart, Bookmark, Eye, Calendar, ArrowLeft, Edit3, Trash2 } from 'lucide-react';
-import { getImageUrl } from '../utils/imageUtils';
+import { getImageUrl, DEFAULT_AVATAR_URL } from '../utils/imageUtils';
 import ConfirmModal from '../components/ConfirmModal';
 import { sanitizeRichHtml } from '../utils/sanitizeHtml';
 
@@ -128,14 +128,14 @@ const BlogDetail = () => {
           <div className="flex items-center gap-3">
             <Link
               to={`/edit/${blog.id}`}
-              className="flex items-center gap-1.5 px-4 py-2 border border-slate-800 rounded-xl bg-slate-900/60 hover:bg-slate-900 text-xs font-semibold text-slate-300 hover:text-white transition"
+              className="flex items-center gap-1.5 px-4 py-2 border border-slate-800 rounded-xl bg-slate-900/60 hover:bg-slate-900 text-xs font-semibold text-slate-300 hover:text-white transition cursor-pointer"
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>Edit Post</span>
             </Link>
             <button
               onClick={handleDelete}
-              className="flex items-center gap-1.5 px-4 py-2 border border-red-500/20 rounded-xl bg-red-500/5 hover:bg-red-500/10 text-xs font-semibold text-red-400 hover:text-red-300 transition"
+              className="flex items-center gap-1.5 px-4 py-2 border border-red-500/20 rounded-xl bg-red-500/5 hover:bg-red-500/10 text-xs font-semibold text-red-400 hover:text-red-300 transition cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Delete</span>
@@ -162,7 +162,7 @@ const BlogDetail = () => {
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-900 pb-6 pt-4">
           <div className="flex items-center gap-3">
             <img
-              src={getImageUrl(blog.author.avatarUrl) || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + blog.author.username}
+              src={getImageUrl(blog.author.avatarUrl) || DEFAULT_AVATAR_URL}
               alt={blog.author.fullName}
               className="w-10 h-10 rounded-full border border-slate-700 bg-slate-800"
             />
@@ -207,7 +207,7 @@ const BlogDetail = () => {
         <div className="flex items-center gap-6">
           <button
             onClick={handleLike}
-            className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
+            className={`flex items-center gap-2 text-sm font-semibold transition-colors cursor-pointer ${
               blog.liked ? 'text-rose-500 hover:text-rose-400' : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -218,7 +218,7 @@ const BlogDetail = () => {
 
         <button
           onClick={handleBookmark}
-          className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
+          className={`flex items-center gap-2 text-sm font-semibold transition-colors cursor-pointer ${
             blog.bookmarked ? 'text-amber-500 hover:text-amber-400' : 'text-slate-400 hover:text-white'
           }`}
         >

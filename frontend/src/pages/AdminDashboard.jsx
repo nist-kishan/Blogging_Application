@@ -4,8 +4,9 @@ import { adminService } from '../services/adminService';
 import { categoryService } from '../services/categoryService';
 import { blogService } from '../services/blogService';
 import { Spinner } from '../components/Loader';
-import { LayoutDashboard, Users, Layers, MessageSquare, ShieldAlert, Plus, Trash2, Edit2, Shield, User, FileText, AlertCircle } from 'lucide-react';
+import { LayoutDashboard, Users, Layers, MessageSquare, ShieldAlert, Plus, Trash2, Edit2, Shield, User, FileText, AlertCircle, Search, CheckCircle, Loader } from 'lucide-react';
 import ConfirmModal from '../components/ConfirmModal';
+import { DEFAULT_AVATAR_URL } from '../utils/imageUtils';
 
 const AdminDashboard = () => {
   const queryClient = useQueryClient();
@@ -230,7 +231,7 @@ const AdminDashboard = () => {
       <div className="flex border-b border-slate-900 overflow-x-auto gap-6 scrollbar-none">
         <button
           onClick={() => setActiveSubTab('stats')}
-          className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider relative transition ${
+          className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider relative transition cursor-pointer ${
             activeSubTab === 'stats' ? 'text-primary-400' : 'text-slate-500 hover:text-slate-300'
           }`}
         >
@@ -241,7 +242,7 @@ const AdminDashboard = () => {
 
         <button
           onClick={() => setActiveSubTab('users')}
-          className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider relative transition ${
+          className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider relative transition cursor-pointer ${
             activeSubTab === 'users' ? 'text-primary-400' : 'text-slate-500 hover:text-slate-300'
           }`}
         >
@@ -252,7 +253,7 @@ const AdminDashboard = () => {
 
         <button
           onClick={() => setActiveSubTab('categories')}
-          className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider relative transition ${
+          className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider relative transition cursor-pointer ${
             activeSubTab === 'categories' ? 'text-primary-400' : 'text-slate-500 hover:text-slate-300'
           }`}
         >
@@ -263,7 +264,7 @@ const AdminDashboard = () => {
 
         <button
           onClick={() => setActiveSubTab('blogs')}
-          className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider relative transition ${
+          className={`flex items-center gap-2 pb-4 text-xs font-bold uppercase tracking-wider relative transition cursor-pointer ${
             activeSubTab === 'blogs' ? 'text-primary-400' : 'text-slate-500 hover:text-slate-300'
           }`}
         >
@@ -334,7 +335,7 @@ const AdminDashboard = () => {
                   <tr key={u.id} className="hover:bg-slate-900/35 transition-colors">
                     <td className="p-4 flex items-center gap-3">
                       <img
-                        src={u.avatarUrl || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + u.username}
+                        src={u.avatarUrl || DEFAULT_AVATAR_URL}
                         alt="avatar"
                         className="w-8 h-8 rounded-full border border-slate-800 bg-slate-800"
                       />
@@ -356,13 +357,13 @@ const AdminDashboard = () => {
                       <div className="flex justify-center gap-3">
                         <button
                           onClick={() => handleToggleRole(u.id, u.role)}
-                          className="text-xs font-semibold text-primary-400 hover:underline"
+                          className="text-xs font-semibold text-primary-400 hover:underline cursor-pointer"
                         >
                           Modify Role
                         </button>
                         <button
                           onClick={() => handleDeleteUser(u.id)}
-                          className="text-xs font-semibold text-red-400 hover:underline flex items-center gap-0.5"
+                          className="text-xs font-semibold text-red-400 hover:underline flex items-center gap-0.5 cursor-pointer"
                         >
                           <Trash2 className="w-3 h-3" /> Delete
                         </button>
