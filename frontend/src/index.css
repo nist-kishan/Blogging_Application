@@ -145,7 +145,16 @@ button:not(:disabled),
 a[href],
 [role="button"]:not([aria-disabled="true"]),
 label[for],
-label:has(input[type="file"]) {
+label:has(input[type="file"]),
+.clickable,
+.icon-button,
+.nav-icon,
+.interactive,
+[data-clickable="true"],
+svg[onClick],
+div[onClick],
+span[onClick],
+li[onClick] {
   cursor: pointer;
 }
 

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { blogService } from '../services/blogService';
 import { Heart, Bookmark, Eye, MessageSquare, Calendar } from 'lucide-react';
-import { getImageUrl } from '../utils/imageUtils';
+import { getImageUrl, DEFAULT_AVATAR_URL } from '../utils/imageUtils';
 
 const BlogCard = ({ blog }) => {
   const navigate = useNavigate();
@@ -98,7 +98,7 @@ const BlogCard = ({ blog }) => {
           {/* Author info */}
           <Link to={`/profile/${blog.author.username}`} className="flex items-center gap-2.5 group/author">
             <img
-              src={getImageUrl(blog.author.avatarUrl) || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + blog.author.username}
+              src={getImageUrl(blog.author.avatarUrl) || DEFAULT_AVATAR_URL}
               alt={blog.author.fullName}
               className="w-7 h-7 rounded-full border border-slate-800 bg-slate-800"
             />
@@ -108,31 +108,37 @@ const BlogCard = ({ blog }) => {
           </Link>
 
           {/* Engagement actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2.5 text-[10px]">
             <button
               onClick={handleLikeClick}
               disabled={likeMutation.isPending}
-              className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${
+              className={`flex items-center gap-1 text-[10px] font-medium transition-colors cursor-pointer ${
                 blog.liked ? 'text-rose-500 hover:text-rose-400' : 'text-slate-500 hover:text-slate-300'
               }`}
             >
-              <Heart className={`w-4 h-4 ${blog.liked ? 'fill-current' : ''}`} />
+              <Heart className={`w-3 h-3 ${blog.liked ? 'fill-current' : ''}`} />
               <span>{blog.likesCount}</span>
             </button>
 
-            <div className="flex items-center gap-1.5 text-xs text-slate-500">
-              <MessageSquare className="w-4 h-4" />
+            <button
+              type="button"
+              className="flex items-center gap-1 text-[10px] text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+              aria-label="View comments"
+            >
+              <MessageSquare className="w-3 h-3" />
               <span>{blog.commentsCount}</span>
-            </div>
+            </button>
 
             <button
+              type="button"
               onClick={handleBookmarkClick}
               disabled={bookmarkMutation.isPending}
-              className={`transition-colors ${
+              className={`transition-colors cursor-pointer ${
                 blog.bookmarked ? 'text-amber-500 hover:text-amber-400' : 'text-slate-500 hover:text-slate-300'
               }`}
+              aria-label={blog.bookmarked ? 'Remove bookmark' : 'Bookmark article'}
             >
-              <Bookmark className={`w-4 h-4 ${blog.bookmarked ? 'fill-current' : ''}`} />
+              <Bookmark className={`w-3 h-3 ${blog.bookmarked ? 'fill-current' : ''}`} />
             </button>
           </div>
         </div>
