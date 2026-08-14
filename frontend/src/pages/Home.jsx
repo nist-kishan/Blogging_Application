@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { blogService } from '../services/blogService';
 import { categoryService } from '../services/categoryService';
 import BlogCard from '../components/BlogCard';
 import { BlogGridSkeleton } from '../components/Loader';
 import { TrendingUp, Flame, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getSelectedCategoryFromSearch } from '../utils/categoryQuery';
 
 const Home = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(() => getSelectedCategoryFromSearch(location.search));
   const [activeTab, setActiveTab] = useState('latest'); // 'latest', 'trending'
+
+  useEffect(() => {
+    const categoryFromUrl = getSelectedCategoryFromSearch(location.search);
+    setSelectedCategory(categoryFromUrl);
+    setCurrentPage(0);
+  }, [location.search]);
 
   // Fetch Categories
   const { data: catData } = useQuery({
@@ -99,8 +109,11 @@ const Home = () => {
           onClick={() => {
             setSelectedCategory(null);
             setCurrentPage(0);
+            const nextSearch = new URLSearchParams(location.search);
+            nextSearch.delete('category');
+            navigate(nextSearch.toString() ? `?${nextSearch.toString()}` : '/', { replace: false });
           }}
-          className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition border ${
+          className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition border cursor-pointer ${
             selectedCategory === null
               ? 'bg-primary-600 border-primary-500 text-white'
               : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -112,10 +125,13 @@ const Home = () => {
           <button
             key={cat.id}
             onClick={() => {
+              const nextSearch = new URLSearchParams(location.search);
+              nextSearch.set('category', cat.slug);
+              navigate(`/?${nextSearch.toString()}`);
               setSelectedCategory(cat.slug);
               setCurrentPage(0);
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition border ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition border cursor-pointer ${
               selectedCategory === cat.slug
                 ? 'bg-primary-600 border-primary-500 text-white'
                 : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200'
