@@ -1,3 +1,5 @@
+export const DEFAULT_AVATAR_URL = 'https://api.dicebear.com/7.x/bottts/svg?seed=default';
+
 export const getImageUrl = (path) => {
   if (!path) return '';
   if (path.startsWith('http://') || path.startsWith('https://')) {

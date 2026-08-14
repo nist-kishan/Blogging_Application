@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { authService } from '../services/authService';
 import { logoutSuccess } from '../store/authSlice';
 import { Search, PenTool, LogOut, LayoutDashboard, User, Bookmark, Menu, X, ChevronDown, Sun, Moon } from 'lucide-react';
-import { getImageUrl } from '../utils/imageUtils';
+import { getImageUrl, DEFAULT_AVATAR_URL } from '../utils/imageUtils';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -96,10 +96,10 @@ const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center gap-2 focus:outline-none"
+                  className="flex items-center gap-2 focus:outline-none cursor-pointer"
                 >
                   <img
-                    src={getImageUrl(user.avatarUrl) || 'https://api.dicebear.com/7.x/bottts/svg?seed=fallback'}
+                    src={getImageUrl(user.avatarUrl) || DEFAULT_AVATAR_URL}
                     alt="avatar"
                     className="w-8 h-8 rounded-full border border-slate-700 bg-slate-800"
                   />
@@ -127,7 +127,7 @@ const Navbar = () => {
                     <Link
                       to={`/profile/${user.username}`}
                       onClick={() => setIsDropdownOpen(false)}
-                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-900 transition-colors"
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-900 transition-colors cursor-pointer"
                     >
                       <User className="w-4 h-4 text-slate-400" />
                       <span>My Profile</span>
@@ -136,7 +136,7 @@ const Navbar = () => {
                     <Link
                       to="/bookmarks"
                       onClick={() => setIsDropdownOpen(false)}
-                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-900 transition-colors"
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-900 transition-colors cursor-pointer"
                     >
                       <Bookmark className="w-4 h-4 text-slate-400" />
                       <span>Bookmarks</span>
@@ -144,7 +144,7 @@ const Navbar = () => {
 
                     <button
                       onClick={() => logoutMutation.mutate()}
-                      className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors text-left"
+                      className="w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors text-left cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Log Out</span>
@@ -170,7 +170,7 @@ const Navbar = () => {
         <div className="flex md:hidden items-center gap-4">
           {isAuthenticated && (
             <img
-              src={getImageUrl(user.avatarUrl) || 'https://api.dicebear.com/7.x/bottts/svg?seed=fallback'}
+              src={getImageUrl(user.avatarUrl) || DEFAULT_AVATAR_URL}
               alt="avatar"
               className="w-8 h-8 rounded-full border border-slate-700 bg-slate-800"
               onClick={() => navigate(`/profile/${user.username}`)}
